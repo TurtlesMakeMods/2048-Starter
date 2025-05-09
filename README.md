@@ -1,24 +1,6 @@
 # 2048-Starter
+I cloned the starter repo, changed everything about it
 
-Dependencies:
-	
-	Necessary: Python3
-	
-	Optional (but important): Getch, Termcolor, Tkinter
+Don't run it the way they want you to, just run starter_2048.py
 
-	Download Python3 from here: https://www.python.org/downloads/
-	
-	Use these commands to install the optional but important dependencies:
-		python3 -m pip install getch
-		python3 -m pip install termcolor
-
-Structure of Repo: Bare starter files included. Check other GitHub repo for staff solution.
-
-2048 Spec: https://goo.gl/34kNbl
-
-
-Using the code:
-	
-	To run: 	python3 starter_2048.py
-	
-	To test: 	python3 autograder.py 					
+It is purely text based, no GUI yet
