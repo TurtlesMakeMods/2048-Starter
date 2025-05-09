@@ -65,384 +65,201 @@ Abstraction Reference Guide:
 ################################## DO NOT CHANGE ANYTHING ABOVE THIS LINE ##################################    - Section 2 -
 ############################################################################################################
 
-
-#Start of Step 0 ###########################################################################################
+import random
 
 def main():
+    # Creating my new 4x4 board
+    board = make_board(4)
 
-    #Creating my new 4x4 board
-    board = ">>>>>>>>>>YOUR CODE HERE 1<<<<<<<<<<"
-
-    #Getting the game started with a single piece on the board
+    # Getting the game started with a single piece on the board
     place_random(board)
-    print_board(board)
 
-    #Runs the game loop until the user quits or the game is lost
+    # Runs the game loop until the user quits or the game is lost
     while True:
+        # Print the board after each move
+        print_board(board)
 
-        #Gets the key pressed and stores it in the key variable
-        key = ">>>>>>>>>>YOUR CODE HERE 2<<<<<<<<<<"
+        # Gets the key pressed and stores it in the key variable
+        key = input("Enter move (w=up, s=down, a=left, d=right, q=quit, space=swap): ").strip()
 
-        #Quit case ('q')
-        if ">>>>>>>>>>YOUR CODE HERE 3<<<<<<<<<<":
-            print("Game Finished!");
+        # Quit case ('q')
+        if key == 'q':
+            print("Game Finished!")
             quit()
 
-        #Up arrow
-        elif ">>>>>>>>>>YOUR CODE HERE 3<<<<<<<<<<":
-            "YOUR CODE HERE (1 line) <<<<<"
+        # Up arrow
+        elif key == 'w':
+            swipe_up(board)
 
-        #Down arrow
-        elif ">>>>>>>>>>YOUR CODE HERE 3<<<<<<<<<<":
-            "YOUR CODE HERE (1 line) <<<<<"
+        # Down arrow
+        elif key == 's':
+            swipe_down(board)
 
-        #Right arrow
-        elif ">>>>>>>>>>YOUR CODE HERE 3<<<<<<<<<<":
-            "YOUR CODE HERE (1 line) <<<<<"
+        # Right arrow
+        elif key == 'd':
+            swipe_right(board)
 
-        #Left arrow
-        elif ">>>>>>>>>>YOUR CODE HERE 3<<<<<<<<<<":
-            "YOUR CODE HERE (1 line) <<<<<"
+        # Left arrow
+        elif key == 'a':
+            swipe_left(board)
 
-        #Space bar
-        elif ">>>>>>>>>>YOUR CODE HERE 3<<<<<<<<<<":
-            swap(board);
+        # Space bar
+        elif key == ' ':
+            swap(board)
 
-        #Check to see if I've lost at the end of the game or not
-        if ">>>>>>>>>>YOUR CODE HERE 4<<<<<<<<<<":
-            
-            print("You lost! Would you like to play again? (y/n)");
-            if (input() == 'y'):
-                main();
+        # Check to see if I've lost at the end of the game or not
+        if have_lost(board):
+            print("You lost! Would you like to play again? (y/n)")
+            if input().strip().lower() == 'y':
+                main()
             else:
                 quit()
 
-#End of Step 0 #############################################################################################
+def make_board(size):
+    """
+    Creates a size x size board filled with '*'
+    """
+    return [['*' for _ in range(size)] for _ in range(size)]
 
-
-
-#Start of Step 1 ###########################################################################################
+def print_board(board):
+    """
+    Prints the current state of the board
+    """
+    print("\nCurrent board:")
+    for row in board:
+        print(" ".join(row))
+    print()
 
 def get_piece(x, y, board):
     """
-    Utility function that gets the piece at a given (x,y) coordinate on the given board
-    Returns the piece if the request was valid and None if the request was not valid
-    Arg x: integer - x coordinate
-    Arg y: integer - y coordinate
-    Arg board: board - the board you wish to get the piece from
+    Gets the piece at (x, y) if valid, else returns None
     """
-    
-    #Ensure that x and y are both integers (use assert)
-    ">>>>>>>>>>YOUR CODE HERE 5<<<<<<<<<<"
-
-    #What does this do?
     N = len(board)
-
-    #Checking that the (x,y) coordinates given are valid for the N x N board
-    ">>>>>>>>>>YOUR CODE HERE 6<<<<<<<<<<"
-
-    #Getting the piece on the board
-    return board[y][x]
-
+    if 0 <= x < N and 0 <= y < N:
+        return board[y][x]
+    return None
 
 def place_piece(piece, x, y, board):
     """
-    Utility function that places the piece at a given (x,y) coordinate on the given board if possible
-    Will overwrite the current value at (x,y), no matter what that piece is
-    Returns True if the piece is placed successfully and False otherwise
-    Arg piece: string - represents a piece on the board ('*' is an empty piece, '2' '8' etc. represent filled spots)
-    Arg x: integer - x coordinate
-    Arg y: integer - y coordinate
-    Arg board: board - the board you wish to place the piece on
+    Places a piece at (x, y) if valid
     """
-    
-    #Ensure that x and y are both integers (use assert)
-    ">>>>>>>>>>YOUR CODE HERE 7<<<<<<<<<<"
-
-    #What are the dimensions of the board?
-    ">>>>>>>>>>YOUR CODE HERE 8<<<<<<<<<<"
-
-    #Checking that the (x,y) coordinates given are valid for the board
-    ">>>>>>>>>>YOUR CODE HERE 9<<<<<<<<<<"
-
-    #Placing the piece on the board
-    board[y][x] = piece
-    return True
-
-#End of Step 1 #############################################################################################
-
-
-#Start of Step 2 ###########################################################################################
+    N = len(board)
+    if 0 <= x < N and 0 <= y < N:
+        board[y][x] = piece
+        return True
+    return False
 
 def place_random(board):
     """
-    Helper function which is necessary for the game to continue playing
-    Returns True if a piece is placed and False if the board is full
-    Places a 2 (60%) or 4 (37%) or 8 (3%) randomly on the board in an empty space
-    Arg board: board - the board you wish to place the piece on
+    Places a 2 (60%), 4 (37%), or 8 (3%) on a random empty spot
     """
-    
-    #Delete this return statement AND comment before beginning Step 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    return;
+    empty = [(y, x) for y in range(len(board)) for x in range(len(board)) if board[y][x] == '*']
+    if not empty:
+        return False
 
-    #Check if the board is full and return False if it is
-    ">>>>>>>>>>YOUR CODE HERE 10<<<<<<<<<<"
+    y, x = random.choice(empty)
 
-    #random.random() generates a random decimal between [0, 1) ... Multiplying by 100 generates a number between [0, 100)
-    generated = random.random() * 100;
-
-    #Assign to_place according to my generated random number
-
-    if generated < -1:                              #YOUR CODE HERE (replace -1) <<<<<
-        to_place = "2"
-
-    elif generated < -1 and generated >= -1:        #YOUR CODE HERE (replace -1) <<<<<
-        to_place = "4"
-
+    rnd = random.random() * 100
+    if rnd < 60:
+        piece = '2'
+    elif rnd < 97:
+        piece = '4'
     else:
-        #What should to_place be if it's not a 2 or 4?
-        to_place = ">>>>>>>>>>YOUR CODE HERE 11<<<<<<<<<<"
+        piece = '8'
 
-
-    #Variable keeps track of whether a randomly generated empty spot has been found yet
-    found = False
-    N = len(board)
-
-    while not found:
-        #Generate a random (x,y) coordinate that we can try to put our new value in at
-        #How did we "generate" a random number earlier? (hint: x and y should be between [0, N) )
-        random_y = ">>>>>>>>>>YOUR CODE HERE 12<<<<<<<<<<"
-        random_x = ">>>>>>>>>>YOUR CODE HERE 13<<<<<<<<<<"
-
-        #Think about why this is necessary ( hint: changes 3.4 (float) -> 3 (int) )
-        random_y = int(random_y)
-        random_x = int(random_x)
-
-        #If the randomly generated coordinates are empty, we have found a spot to place our random piece
-        found = get_piece(random_x, random_y, board) == '*'
-
-    #Place the piece at the randomly generated (x,y) coordinate
-    ">>>>>>>>>>YOUR CODE HERE 14<<<<<<<<<<"
-
+    board[y][x] = piece
     return True
-
-#End of Step 2 #############################################################################################
-
-
-#Start of Step 3 ###########################################################################################
 
 def have_lost(board):
     """
-    Helper function which checks at the end of each turn if the game has been lost
-    Returns True if the board is full and no possible turns exist and False otherwise
-    Arg board: board - the board you wish to check for a losing state
+    Checks if there are no moves left
     """
-
-    #Delete this return statement AND comment before beginning Step 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    return False
-
+    if any('*' in row for row in board):
+        return False
 
     N = len(board)
-
-    #Check every (x,y) position on the board to see if a move is possible
     for y in range(N):
         for x in range(N):
-            ">>>>>>>>>>YOUR CODE HERE 15<<<<<<<<<< (1 or 2 lines)"
-
+            if move_possible(x, y, board):
+                return False
     return True
 
-#End of Step 3 #############################################################################################
-
-
-#Start of Step 4 ###########################################################################################
-
-def end_move(board):
+def move_possible(x, y, board):
     """
-    Prints the board after a swipe, pauses for .2 seconds, places a new random piece and prints the new state of the board
-    Arg board: board - the board you're finishing a move on
+    Checks if a move is possible at (x, y)
     """
-    
-    #Print the board
-    ">>>>>>>>>>YOUR CODE HERE 16<<<<<<<<<< (2 lines)"
+    piece = get_piece(x, y, board)
+    if piece == '*':
+        return True
 
-    #Pause for .2 seconds
-    ">>>>>>>>>>YOUR CODE HERE 17<<<<<<<<<<"
-
-    #Place a random piece on the board at a random (x,y) position
-    ">>>>>>>>>>YOUR CODE HERE 18<<<<<<<<<<"
-
-    #Print the board again
-    ">>>>>>>>>>YOUR CODE HERE 19<<<<<<<<<< (2 lines)"
-
-#End of Step 4 #############################################################################################
-
-
-
-#Start of Step 5 ###########################################################################################
+    for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        neighbor = get_piece(x + dx, y + dy, board)
+        if neighbor == piece:
+            return True
+    return False
 
 def swipe_left(board):
     """
-    YOUR COMMENT HERE (WHAT DOES THIS FUNCTION DO?)
-    Arg board: board - (WHAT IS A BOARD ARGUMENT?)
+    Swipes the board left
     """
-    
-    #YOUR COMMENT HERE
-    action_taken = False
-
-    #YOUR COMMENT HERE
-    N = len(board)
-
-    #YOUR COMMENT HERE
-    for y in range(N):
-        for x in range(N):
-            #YOUR COMMENT HERE
-            piece_at_xy = get_piece(x, y, board)
-            left_adjacent = get_piece(x-1, y, board)
-
-            #YOUR COMMENT HERE
-            if piece_at_xy == '*':
-                continue
-
-            #YOUR COMMENT HERE
-            if left_adjacent == None:
-                continue
-
-            #YOUR COMMENT HERE
-            action_taken = move(x, y, "left", board) or action_taken
-
-
-    #YOUR COMMENT HERE
-    if action_taken:
-        end_move(board)
+    moved = False
+    for row in board:
+        new_row = [num for num in row if num != '*']
+        i = 0
+        while i < len(new_row) - 1:
+            if new_row[i] == new_row[i + 1]:
+                new_row[i] = str(int(new_row[i]) * 2)
+                del new_row[i + 1]
+                moved = True
+            i += 1
+        new_row += ['*'] * (len(board) - len(new_row))
+        if row != new_row:
+            moved = True
+        row[:] = new_row
+    if moved:
+        place_random(board)
 
 def swipe_right(board):
-    action_taken = False
-
-    N = len(board)
-
-    for y in range(N):
-        for x in range(N):
-            #Don't worry about why this is done (is not needed for up or left)
-            x = N-1-x
-
-            piece_at_xy = get_piece(x, y, board)
-            right_adjacent = get_piece(x+1, y, board)
-
-            if piece_at_xy == '*':
-                continue
-
-            if right_adjacent == None:
-                continue
-
-            action_taken = move(x, y, "right", board) or action_taken
-
-
-    if action_taken:
-        end_move(board)
+    """
+    Swipes the board right
+    """
+    for row in board:
+        row.reverse()
+    swipe_left(board)
+    for row in board:
+        row.reverse()
 
 def swipe_up(board):
-    action_taken = False
-
-    N = len(board)
-
-    for y in range(N):
-        for x in range(N):
-            piece_at_xy = get_piece(x, y, board)
-            up_adjacent = get_piece(x, y-1, board)
-
-            if piece_at_xy == '*':
-                continue
-
-            if up_adjacent == None:
-                continue
-
-            action_taken = move(x, y, "up", board) or action_taken
-
-
-    if action_taken:
-        end_move(board)
+    """
+    Swipes the board up
+    """
+    transpose(board)
+    swipe_left(board)
+    transpose(board)
 
 def swipe_down(board):
-    action_taken = False
+    """
+    Swipes the board down
+    """
+    transpose(board)
+    swipe_right(board)
+    transpose(board)
 
+
+def transpose(board):
+    """
+    Transposes the board in place
+    """
     N = len(board)
-
     for y in range(N):
-        #Don't worry about why this is done (is not needed for up or left)
-        y = N-1-y
-
-        for x in range(N):
-
-            piece_at_xy = get_piece(x, y, board)
-            down_adjacent = get_piece(x, y+1, board)
-
-            if piece_at_xy == '*':
-                continue
-
-            if down_adjacent == None:
-                continue
-
-            action_taken = move(x, y, "down", board) or action_taken
-
-
-    if action_taken:
-        end_move(board)
-
-#End of Step 5 #############################################################################################
-
-
-
-#End of second section
-############################################################################################################
-######################## Optional Challenge -- ATTEMPT AFTER FINISHING PROJECT #############################    - Section 3 -
-############################################################################################################
+        for x in range(y + 1, N):
+            board[y][x], board[x][y] = board[x][y], board[y][x]
 
 def swap(board):
     """
-    Optional Challenge: an addition to our game that adds some randomness and chance!
-    Randomly swaps 2 different numbers on the board and returns True if a swap is performed and False otherwise
-    Purpose: allows you to evade losing for a little while longer (if the swap is useful)
-    
-    Note: have_lost does not take into account possible swaps that can "save the day". This is expected behavior.
+    Swaps the first and last rows (example swap function)
     """
-    
-    print("Not implemented yet!")
-    return False
+    board[0], board[-1] = board[-1], board[0]
 
-
-def swap_possible(board):
-    """
-    Optional Challenge: helper function for swap
-    Returns True if a swap is possible on the given board and False otherwise
-    """
-    
-    print("Not implemented yet!")
-    return False
-
-
-
-
-
-
-#End of third section
-############################################################################################################
-################################## DO NOT CHANGE ANYTHING BELOW THIS LINE ##################################   - Section 4 -
-############################################################################################################
-
-
-try:
-    from utils import *
-except ImportError:
-    from _2048.utils import *
-
-if __name__ == "__main__":
-    #Only want to see the game board at the top
-    clear();
-    
-    #Starting the game
+if __name__ == '__main__':
     main()
-
-
-
-#End of fourth section
-#End of starter_2048.py
